@@ -14,7 +14,54 @@
 	<script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
 	<script src="http://code.jquery.com/mobile/1.1.0-rc.1/jquery.mobile-1.1.0-rc.1.min.js"></script>
 	<meta name="viewport" content="width=device-width, initial-scale=1"> 
-	<
+	<script type = "text/javascript">
+		
+		//jquery runs to update page and server with a newly added book
+		$(document).ready(function(){$("#booton").click(function(){
+    		var book = $("#book").val();
+    		var author = $("#author").val();
+    		var url = $("#URL").val();
+		
+		//variable to store bookid in. Called key2
+		var key2;
+		
+		//calls on add_post to add to server
+		$.post('add_post.php', { book: book, author: author, URL: url },
+ 		function(data) {
+  			key2 = data;
+ 		});
+    	
+    	var div = $('<div data-role="page">');
+    	
+    	//appends book onto screen without reloading page
+    	div.append("<div class='books' data-id='"+key2+"'>"
+		+"<img src="+ url 
+    	+ " alt= Image for "+book+" height='60' width='60' /> <br>"
+    	+ book + "<br> by " + author + "<br>"
+    	+"<button class= 'buttons' data-id='"+key2+"'> Remove</button>"
+    	+"<p class='comments_btn' data-id='"+ key2+"'>Comments:</p>"
+    	
+    	//comments section
+		+"<div class='comments' style= 'display: none' data-id='"+key2+"'>"
+		+"</div>"
+		+"<div class='comments1' style= 'display: none' data-id='"+key2+"'>"
+		+"<form id='addcomment' name='addcomment' method='post' action='#'>" 			
+		+"<textarea name='comment"+key2+"' id='comment"+key2+"' rows='4' cols='38' placeholder='Add comment here'></textarea>"
+		+"<input type='submit' value = 'Post'></button></form>"
+		+"<div class='hide' style= 'display: none' data-id='"+key2+"'>"
+		+"<input type='submit' value = 'Hide Comments'></button>"
+		+"</div></div></div>");
+		
+		//removes a book from the page
+		
+		  alert(key2);  	
+    	//adds all to page
+    	$("body").append(div);
+    	
+        return false;
+    	})});
+  
+		</script>
 	<title>Ben B.'s Book Club</title>
 </head>
 
@@ -41,134 +88,7 @@
 			<input type="submit" value="Filter" />
 		</form>
 		<br/>
-		
-		<script type = "text/javascript">
-		
-		//jquery runs to update page and server with a newly added book
-		$("#booton").click(function(){
-    		var book = $("#book").val();
-    		var author = $("#author").val();
-    		var url = $("#URL").val();
-		
-		//variable to store bookid in. Called key2
-		var key2;
-		
-		//calls on add_post to add to server
-		$.post('add_post.php', { book: book, author: author, URL: url },
- 		function(data) {
-  			key2 = data;
-  			$("body").append(key2);
- 		});
-    	
-    	var div = $('<div>');
-    	
-    	//appends book onto screen without reloading page
-    	div.append("<div class='books' data-id='"+key2+"'>"
-    	+"<div class='star' data-id='"+key2+"'>"
-		+"<div class= 'favorite' data-id='"+key2+"'> "
-		+"<img src='https://encrypted-tbn3.google.com/images?q=tbn:ANd9GcTLLYvOpe-0zxvIa6d2YbTp5uKB7wLVMptF40CxiGcdPzAqZEa95w' height ='25' width ='25'/></div></div>"
-		+"<img src="+ url 
-    	+ " alt= Image for "+book+" height='60' width='60' /> ");
-    	div.append(book + "<br> by " + author + "<br>"
-    	+"<button class= 'buttons' data-id='"+key2+"'> Remove</button>"
-    	+"<p class='comments_btn' data-id='"+ key2+"'>Comments:</p>"
-    	
-    	//comments section
-		+"<div class='comments' style= 'display: none' data-id='"+key2+"'>"
-		+"</div>"
-		+"<div class='comments1' style= 'display: none' data-id='"+key2+"'>"
-		+"<form id='addcomment' name='addcomment' method='post' action='#'>" 			
-		+"<textarea name='comment"+key2+"' id='comment"+key2+"' rows='4' cols='38' placeholder='Add comment here'></textarea>"
-		+"<input type='submit' value = 'Post'></button></form>"
-		+"<div class='hide' style= 'display: none' data-id='"+key2+"'>"
-		+"<input type='submit' value = 'Hide Comments'></button>"
-		+"</div></div></div>"
-		
-		//removes a book from the page
-		+"<script type = 'text/javascript'>" 
-		
-		//checks local storage to see if anything has been favorited, if so use a yellow star else white
-		+"if (localStorage.star"+key2+" == 'y')"
-		+"{"
-			+"var stardiv = $('<div class=\"favorite\" data-id=\""+key2+"\">');"
-    		+"stardiv.append('<img src = \"http://upload.wikimedia.org/wikipedia/commons/f/f5/Star_max-b.png\" height =\"25\" width =\"25\"/>');"
-		+"}"
-		+"else"
-		+"{"
-			+"var stardiv = $('<div class=\"favorite\" data-id=\""+key2+"\">');"
-			+"stardiv.append('<img src = \"https://encrypted-tbn3.google.com/images?q=tbn:ANd9GcTLLYvOpe-0zxvIa6d2YbTp5uKB7wLVMptF40CxiGcdPzAqZEa95w\" height =\"25\" width =\"25\"/>');"
-		+"}"
-		
-		//edits the stars
-		+"$('.favorite[data-id="+key2+"]').remove();"
-    	+"$('.star[data-id="+key2+"]').append(stardiv);"
-		
-		//if users click stars then it changes color
-		+"$('.star[data-id="+key2+"]').click(function (){"		
-    	+"$('.favorite[data-id="+key2+"]').remove();"
-    	+"if (localStorage.star"+key2+" == 'y')"
-    	+"{"
-    		+"localStorage.star"+key2+"= 'n';"
-    		+"var stardiv = $('<div class=\"favorite\" data-id=\""+key2+"\">');"
-			+"stardiv.append('<img src = \"https://encrypted-tbn3.google.com/images?q=tbn:ANd9GcTLLYvOpe-0zxvIa6d2YbTp5uKB7wLVMptF40CxiGcdPzAqZEa95w\" height =\"25\" width =\"25\"/>');"
-    	+"}"
-    	+"else" 
-    	+"{"	
-    		+"localStorage.star"+key2+" = 'y';"
-    		+"var stardiv = $('<div class=\"favorite\" data-id=\""+key2+"\">');"
-    		+"stardiv.append('<img src = \"http://upload.wikimedia.org/wikipedia/commons/f/f5/Star_max-b.png\" height =\"25\" width =\"25\"/>');"
-    	+"}"	
-    		
-    	+"$('.favorite[data-id="+key2+"]').remove();"
-    	+"$('.star[data-id="+key2+"]').append(stardiv);})"
-    	+";"
-		
-		//deletes a book
-		+"$('.buttons[data-id="+key2+"]').click(function (){"
-    	+"$('.books[data-id="+key2+"]').remove();"
-    	
-    	+"var request2 ="
-  		+"$.ajax({"
-  			+"type: 'POST',"
-  			+"url: 'deletebook.php',"
-  			+"data: 'bookuid="+key2+"'}"
-			+");"
-    	+"});"
-		
-		//clicking comments will show all the comments
-		+"$('.comments_btn[data-id="+key2+"]').click(function() {"
-		+"$('.comments[data-id="+key2+"]').show();"
-		+"$('.comments1[data-id="+key2+"]').show();"
-		+"$('.hide[data-id="+key2+"]').show();});" 
 			
-		+"$('.hide[data-id="+key2+"]').click(function() {"
-		+"$('.comments[data-id="+key2+"]').hide();"
-		+"$('.comments1[data-id="+key2+"]').hide();"
-		+"$('.hide[data-id="+key2+"]').hide();});" 
-		
-		//submits a comment
-		+"$('.comments1[data-id="+key2+"]').submit(function(){"
-			+"var comment1 = $('#comment"+key2+"').val();"
-    		+"var bookid ="+key2+";"
-    		+"var div = $('<div>');"
-    		+"div.append(comment1+'<br><br>');"
-    	   	
-    	//adds comments to a page
-    	+"$('.comments[data-id="+key2+"]').append(div);"
-    	+"var request2 ="
-  		+"$.ajax({"
-  			+"type: 'POST',"
-  			+"url: 'addcomment.php',"
-  			+"data: bookid="+key2+"&comment="+comment1+"});"
-    	);
-		    	
-    	//adds all to page
-    	$("body").append(div);
-    	
-        return false;
-    	});
-  
-		</script>	
 				
 		<?
 		

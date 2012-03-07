@@ -6,8 +6,11 @@
 	
 	// TODO 2: Check for presence of input parameters else alert
 	if (empty($_POST["title"]) || empty($_POST["author"]) || empty($_POST["URL"]))
-	{    print("Please fill out all fields");
+	{    
+		print("empty");
 	}
+
+	
 	else
 	{
 	// TODO 2: Save the cleaned input data
@@ -18,7 +21,14 @@
 	// TODO 2: Make sure data is reasonable length
 	if (strlen ($title) > 128 || strlen ($author) > 128 || strlen ($url) > 512)
 		die("Your inputs are too long");
-		
+	
+	$check = mysql_query("SELECT * FROM Books WHERE title = '$title'");
+	if (mysql_fetch_array($check)!=false)
+	{
+		print("exists");
+	}
+	else
+	{
 	// TODO 2: Add post into table
 	
 	mysql_query("INSERT INTO Books (title, author, url) VALUES ('$title', '$author',  '$url')");
@@ -27,6 +37,7 @@
 	$row3 = mysql_fetch_array($result3);
 
 	print ($row3["id"]);
+	}
 	}
 	
 ?>

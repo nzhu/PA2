@@ -4,7 +4,7 @@ html, body{
     padding:0px;
     margin:0px;
 	font-family: Lato, sans-serif;
-	margin-left:30px;
+	margin-left:0px;
 	text-align:center;
 }
 
@@ -14,6 +14,12 @@ display: none;
 color: blue;
 text-align:left;
 }
+
+div#five{
+border-bottom: 1px grey inset;width: 100%;
+margin-left:-15px;
+}
+	
 
 .favorite{
 margin-left:0px;
@@ -25,10 +31,6 @@ div#wrapper{
 	padding-bottom:5px;
 }
 
-div#header {
-	padding-top:45px;
-    padding-bottom:10px;  
-}
 
 div#title a{
     padding-bottom:10px;

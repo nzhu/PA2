@@ -9,12 +9,11 @@
 <html>
 <head>
 	<link href="style.css" rel="stylesheet" type="text/css">
-	<script src="http://code.jquery.com/jquery-latest.js"> </script>
 	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.1.0-rc.1/jquery.mobile-1.1.0-rc.1.min.css" />
 	<script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
 	<script src="http://code.jquery.com/mobile/1.1.0-rc.1/jquery.mobile-1.1.0-rc.1.min.js"></script>
 	<meta name="viewport" content="width=device-width, initial-scale=1"> 
-	<
+	
 	<title>Ben B.'s Book Club</title>
 </head>
 
@@ -22,19 +21,21 @@
 
 <div data-role="page">
 	<div id='wrapper'>
-		<div id='header'>
+		
 			<div id='title'><a href="index.php">Ben B.'s Book Club<a/></div>
-			<label for="addpost" class="ui-hidden-accessible">Addpost:</label>
-			<form id="addpost" name="addpost" method="post" action="#"> 
-				<label for="book" class="ui-hidden-accessible">Title:</label>
-				<input type="text" name="book" id="book" placeholder="Title"/> <br />
-				<label for="author" class="ui-hidden-accessible">Author:</label>
-				<input type="text" name="author" id="author" placeholder="Author"/><br />
-				<label for="URL" class="ui-hidden-accessible">URL:</label>
-				<textarea name="URL" id="URL" rows="4" cols="38" placeholder="Image URL"></textarea>
-				<div id= 'booton'><button type="submit" value= "post" >Submit</submit></div>
-			</form>
-		</div>
+			<form id = "addbook" action="#" method="post" class="ui-body ui-body-a ui-corner-all">
+				<fieldset>
+				<div data-role="fieldcontain" class="ui-hide-label">
+				<label for="book">Book:</label>
+	<input type="text" name="book" id="book" value="" placeholder="Book"/>
+	<label for="author">Author:</label>
+	<input type="text" name="author" id="author" placeholder="Author"/><br />
+	<label for="URl">URL:</label>
+	<textarea name="URL" id="URL" rows="4" cols="38" placeholder="Image URL"></textarea>
+	</div>
+	<button type="submit" data-theme="b" name="submit" value="submit-value">Submit</button>
+	</fieldset>
+		
 		<br/>
 		<form id="filter" name="filter" method="get" action="index.php"> 
 			<input type="query" name="query" id="query" placeholder = "Filter by keyword"/>
@@ -45,6 +46,25 @@
 		<script type = "text/javascript">
 		
 		//jquery runs to update page and server with a newly added book
+		
+		("#addcomment").click(function(){
+			alert("poop");
+    		var title = $("#book").val();
+    		var author = $("#author").val();
+    		var url = $("#URL").val();
+		
+		//variable to store bookid in. Called key2
+		var key2;
+		
+		//calls on add_post to add to server
+		$.post('add_post.php', { title: title, author: author, URL: url },
+ 		function(data) {
+  			key2 = data;
+  			$("#1").append(key2);
+ 		});
+ 		return false;
+ 		});
+ 		
 		$("#booton").click(function(){
     		var book = $("#book").val();
     		var author = $("#author").val();
@@ -57,7 +77,7 @@
 		$.post('add_post.php', { book: book, author: author, URL: url },
  		function(data) {
   			key2 = data;
-  			$("body").append(key2);
+  			$("#body").append(key2);
  		});
     	
     	var div = $('<div>');
@@ -161,6 +181,8 @@
   			+"url: 'addcomment.php',"
   			+"data: bookid="+key2+"&comment="+comment1+"});"
     	);
+    	
+    	
 		    	
     	//adds all to page
     	$("body").append(div);
@@ -253,11 +275,7 @@
     		
     		// ajax to delete
     		var request5 =
-  			$.ajax({
-  				type: 'POST',
-  				url: 'deletebook.php',
-  				data: 'bookuid=".$row['id']."'});
-    		});
+  			
 			
 			//clicking comments will show all the comments
 			$('.comments_btn[data-id=".$row['id']."]').click(function() {

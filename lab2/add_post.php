@@ -25,7 +25,7 @@
 	$result3 = mysql_query("SELECT * FROM Books WHERE title = $title");
 	$row3 = mysql_fetch_array($result3);
 
-	print ($row3['id']);
+	print ($row3["id"]);
 
 	
 ?>

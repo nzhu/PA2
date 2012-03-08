@@ -2,7 +2,7 @@
 	//let's define constants here
 	define("DB_USER","cs179");
 	define("DB_PASS","student");
-	define("DB_HOST","localhost");
+	define("DB_HOST","mysql.cs179.org");
 	define("DB_NAME","cs179");
 
 	//create a DB connection

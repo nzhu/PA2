@@ -14,6 +14,6 @@
 		die("Your inputs are too long");
 		
 	//Add post into table
-	mysql_query("INSERT INTO Comments (book_uid, comments) VALUES ('$bookid', '$comment')");
+	mysql_query("INSERT INTO Comments (book_uid, comment) VALUES ('$bookid', '$comment')");
 	 
 ?>

@@ -4,40 +4,41 @@
 	require("common.php");
 
 	
-	// TODO 2: Check for presence of input parameters else alert
+	//Check for presence of input parameters else alert
 	if (empty($_POST["title"]) || empty($_POST["author"]) || empty($_POST["URL"]))
 	{    
 		print("empty");
 	}
-
 	
+	// Make sure data is reasonable length
+	else if (strlen ($_POST["title"]) > 128 || strlen ($_POST["author"]) > 128 || strlen ($_POST["URL"]) > 512)
+	{
+		print("long");
+	}
+
 	else
 	{
-	// TODO 2: Save the cleaned input data
-	$title = mysql_real_escape_string($_POST["title"]);
-	$author = mysql_real_escape_string($_POST["author"]);
-	$url = mysql_real_escape_string($_POST["URL"]);
+		//Save the cleaned input data
+		$title = mysql_real_escape_string($_POST["title"]);
+		$author = mysql_real_escape_string($_POST["author"]);
+		$url = mysql_real_escape_string($_POST["URL"]);
 	
-	// TODO 2: Make sure data is reasonable length
-	if (strlen ($title) > 128 || strlen ($author) > 128 || strlen ($url) > 512)
-		die("Your inputs are too long");
+		$check = mysql_query("SELECT * FROM Books WHERE title = '$title'");
+		if (mysql_fetch_array($check)!=false)
+		{
+			print("exists");
+		}
+		else
+		{
+		//Add post into table
 	
-	$check = mysql_query("SELECT * FROM Books WHERE title = '$title'");
-	if (mysql_fetch_array($check)!=false)
-	{
-		print("exists");
-	}
-	else
-	{
-	// TODO 2: Add post into table
+		mysql_query("INSERT INTO Books (title, author, image_url) VALUES ('$title', '$author',  '$url')");
 	
-	mysql_query("INSERT INTO Books (title, author, url) VALUES ('$title', '$author',  '$url')");
-	
-	$result3 = mysql_query("SELECT * FROM Books WHERE title = '$title'");
-	$row3 = mysql_fetch_array($result3);
+		$result3 = mysql_query("SELECT * FROM Books WHERE title = '$title'");
+		$row3 = mysql_fetch_array($result3);
 
-	print ($row3["id"]);
-	}
+		print ($row3["uid"]);
+		}
 	}
 	
 ?>
